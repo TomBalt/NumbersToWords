@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp1
 {
@@ -7,18 +8,18 @@ namespace ConsoleApp1
         static void Main()
         {
 
-            //* 
+            /* 
             Console.Write("Please enter a number: ");
             string Input = Console.ReadLine();
             Console.WriteLine("Task: Is it a number?");
             Console.WriteLine($"Input {Input} {(IsItANumber(Input) ? "is" : "is not")} a number.");
             Console.ReadKey();
             //*/ 
-            //string Input; //delete
+            
             int RangeMin = -9;
             int RangeMax = 9;
             bool IsItAValidNumber;
-            //*
+            /*
             Console.WriteLine($"Task: Number is between {RangeMin} and {RangeMax}?");
             Console.Write($"Please enter a number between {RangeMin} and {RangeMax}: ");
             Input = Console.ReadLine();
@@ -35,19 +36,19 @@ namespace ConsoleApp1
             Console.ReadKey();
             //*/
 
-            /*
+            //*
             //Testing part
             //int[] nr = { 411, 14, 432, 1034, 23440, 423914, 330000, -1, 0, -321 };
-            //int[] nr = { 0 };
+            int[] nr = { 330000 };
 
             for (int i = 0; i < nr.Length; i++)
             {
-                Console.Write(nr[i] + ": ");
-                Console.WriteLine();
+               Console.Write(nr[i] + ": ");
+              //  Console.WriteLine();
                 ChangeNumberToText(Convert.ToInt32(nr[i]));
             }
-            */
-            //*
+            //*/
+            /*
 
             Console.WriteLine("Task: Number between -19 and 19 to text?");
             RangeMin = -19;
@@ -130,9 +131,10 @@ namespace ConsoleApp1
 
         static void ChangeNumberToText(int Number)
         {
+            List<string> words = new List<string>();
             if (Number < 0)
             {
-                Console.Write("Minus ");
+                words.Add("minus");
                 Number *= -1;
             }
             int NumberOfThousands = Convert.ToString(Number).Length / 3;
@@ -144,43 +146,49 @@ namespace ConsoleApp1
                 {
                     continue;
                 }
-                ConvertNumberToText(integer, i);
+                ConvertNumberToText(integer, i,words);
                 Number -= integer * divisor;
             }
+            
+            for (int i = 0; i < words.Count; i++) {
+                Console.Write(words[i]);
+            }
             Console.WriteLine();
+           // words.ForEach(Console.WriteLine);
+            
         }
 
 
-        static void ConvertNumberToText(int number, int thousandIndex)
+        static void ConvertNumberToText(int number, int thousandIndex, List<string> words)
         {
             bool NumberFrom10to19 = false;
             bool NumberFrom20to99 = false;
             if (LengthOfNumber(number) == 3)
             {
-                Console.Write(GetTheRoot(number / 100, NumberFrom10to19, NumberFrom20to99) + (number / 100 > 1 ? " simtai " : " simtas "));
+                words.Add(GetTheRoot(number / 100, NumberFrom10to19, NumberFrom20to99) + (number / 100 > 1 ? " simtai " : " simtas "));
             }
             int tempNR = number % 100;
 
             if (tempNR >= 0 && tempNR <= 9)
             {
-                Console.Write(GetTheRoot(tempNR, NumberFrom10to19, NumberFrom20to99)+ " ");
+                words.Add(GetTheRoot(tempNR, NumberFrom10to19, NumberFrom20to99)+ " ");
             }
             else if (tempNR > 9 && tempNR <= 19)
             {
                 NumberFrom10to19 = true;
-                Console.Write(GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99) + " ");
+                words.Add(GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99) + " ");
             }
             else
             {
                 NumberFrom20to99 = true;
-                Console.Write(GetTheRoot(tempNR / 10, NumberFrom10to19, NumberFrom20to99) + " ");
+                words.Add(GetTheRoot(tempNR / 10, NumberFrom10to19, NumberFrom20to99) + " ");
                 NumberFrom20to99 = false;
                 if (tempNR % 10 != 0)
                 {
-                    Console.Write(GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99) + " ");
+                    words.Add(GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99) + " ");
                 }
             }
-            Console.Write(thousands(thousandIndex, tempNR) + " ");
+            words.Add(thousands(thousandIndex, tempNR) + " ");
         }
         static string extractThousandEnding(int number)
         {
