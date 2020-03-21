@@ -38,8 +38,8 @@ namespace ConsoleApp1
 
             //*
             //Testing part
-            //int[] nr = { 411, 14, 432, 1034, 23440, 423914, 330000, -1, 0, -321 };
-            int[] nr = { 330000 };
+            int[] nr = { 411, 14, 432, 1034, 23440, 423914, 330000, -1, 0, -321 };
+            //int[] nr = { 330000 };
 
             for (int i = 0; i < nr.Length; i++)
             {
@@ -134,7 +134,7 @@ namespace ConsoleApp1
             List<string> words = new List<string>();
             if (Number < 0)
             {
-                words.Add("minus");
+                words.Add("Minus ");
                 Number *= -1;
             }
             int NumberOfThousands = Convert.ToString(Number).Length / 3;
@@ -148,6 +148,9 @@ namespace ConsoleApp1
                 }
                 ConvertNumberToText(integer, i,words);
                 Number -= integer * divisor;
+                if (Number == 0) {
+                    break;
+                };
             }
             
             for (int i = 0; i < words.Count; i++) {
