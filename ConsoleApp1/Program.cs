@@ -8,18 +8,17 @@ namespace ConsoleApp1
         static void Main()
         {
 
-            /* 
+            
             Console.Write("Please enter a number: ");
             string Input = Console.ReadLine();
             Console.WriteLine("Task: Is it a number?");
             Console.WriteLine($"Input {Input} {(IsItANumber(Input) ? "is" : "is not")} a number.");
-            Console.ReadKey();
+            Console.WriteLine("====================================================================");
             //*/
-
             int RangeMin = -9;
             int RangeMax = 9;
             bool IsItAValidNumber;
-            /*
+            //*
             Console.WriteLine($"Task: Number is between {RangeMin} and {RangeMax}?");
             Console.Write($"Please enter a number between {RangeMin} and {RangeMax}: ");
             Input = Console.ReadLine();
@@ -27,29 +26,27 @@ namespace ConsoleApp1
             {
                 IsItAValidNumber = IsANumberInArange(Input, RangeMin, RangeMax);
             }
-            Console.ReadKey();
+            Console.WriteLine("====================================================================");
             ////
             Console.WriteLine("Task: Change number in to the text.");
             Console.Write("Please enter a number to be converted to sentence: ");
             Input = Console.ReadLine();
             ChangeNumberToText(Convert.ToInt32(Input));
-            Console.ReadKey();
+            Console.WriteLine("====================================================================");
             //*/
 
-            //*
+            /*
             //Testing part
-            int[] nr = { -991919191, 411, 14, 432, 1034, 23440, 423914, 330000, -1, 0, -321 };
+            //int[] nr = { -991919191, 411, 14, 432, 1034, 23440, 423914, 330000, -1, 0, -321 };
             //int[] nr = { 330000 };
-
             for (int i = 0; i < nr.Length; i++)
             {
                 Console.Write(nr[i] + ": ");
                 //  Console.WriteLine();
                 ChangeNumberToText(Convert.ToInt32(nr[i]));
             }
-            //*/
-            /*
-
+            */
+            //*
             Console.WriteLine("Task: Number between -19 and 19 to text?");
             RangeMin = -19;
             RangeMax = 19;
@@ -66,7 +63,7 @@ namespace ConsoleApp1
                 Console.WriteLine("ERROR! Exit 1");
             }
             //*/
-            Console.ReadKey();
+            Console.WriteLine("====================================================================");
 
         }
 
