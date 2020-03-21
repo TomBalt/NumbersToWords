@@ -6,17 +6,19 @@ namespace ConsoleApp1
     {
         static void Main()
         {
+
+            //* 
             Console.Write("Please enter a number: ");
             string Input = Console.ReadLine();
             Console.WriteLine("Task: Is it a number?");
             Console.WriteLine($"Input {Input} {(IsItANumber(Input) ? "is" : "is not")} a number.");
             Console.ReadKey();
-
+            //*/ 
             //string Input; //delete
             int RangeMin = -9;
             int RangeMax = 9;
             bool IsItAValidNumber;
-
+            //*
             Console.WriteLine($"Task: Number is between {RangeMin} and {RangeMax}?");
             Console.Write($"Please enter a number between {RangeMin} and {RangeMax}: ");
             Input = Console.ReadLine();
@@ -25,12 +27,18 @@ namespace ConsoleApp1
                 IsItAValidNumber = IsANumberInArange(Input, RangeMin, RangeMax);
             }
             Console.ReadKey();
-
+            ////
             Console.WriteLine("Task: Change number in to the text.");
             Console.Write("Please enter a number to be converted to sentence: ");
-            /*Testing part
-             //int[] nr = { 411, 14, 432, 1034, 23440, 423914 };
-            //int[] nr = { 423914 };
+            Input = Console.ReadLine();
+            ChangeNumberToText(Convert.ToInt32(Input));
+            Console.ReadKey();
+            //*/
+
+            /*
+            //Testing part
+            //int[] nr = { 411, 14, 432, 1034, 23440, 423914, 330000, -1, 0, -321 };
+            //int[] nr = { 0 };
 
             for (int i = 0; i < nr.Length; i++)
             {
@@ -39,11 +47,7 @@ namespace ConsoleApp1
                 ChangeNumberToText(Convert.ToInt32(nr[i]));
             }
             */
-
-            Input = Console.ReadLine();
-            ChangeNumberToText(Convert.ToInt32(Input));
-            Console.ReadKey();
-            ////
+            //*
 
             Console.WriteLine("Task: Number between -19 and 19 to text?");
             RangeMin = -19;
@@ -60,16 +64,13 @@ namespace ConsoleApp1
             {
                 Console.WriteLine("ERROR! Exit 1");
             }
-
+            //*/
             Console.ReadKey();
 
         }
 
-
         static bool IsANumberInArange(string StrNumber, int RangeMin = -9, int RangeMax = 9)
         {
-
-
             int IntNumber = Convert.ToInt32(StrNumber);
             bool result = (IntNumber > RangeMin && IntNumber < RangeMax) ? true : false;
             if (result)
@@ -85,7 +86,6 @@ namespace ConsoleApp1
 
         static bool IsItANumber(string StrNumber)
         {
-
             bool ValidNumber = false;
             int StartingIndexNumber = 0;
 
@@ -96,15 +96,12 @@ namespace ConsoleApp1
 
             for (int i = StartingIndexNumber; i < StrNumber.Length; i++)
             {
-
                 char c = StrNumber[i];
-
                 for (int n = 0; n < 10; n++)
                 {
                     char z = ConvertIntToProperChar(n);
                     if (c == z)
                     {
-
                         ValidNumber = true;
                         break;
                     }
@@ -114,7 +111,6 @@ namespace ConsoleApp1
                     Console.WriteLine("Not a number: " + c);
                     break;
                 }
-
             }
             return ValidNumber;
         }
@@ -142,107 +138,121 @@ namespace ConsoleApp1
             int NumberOfThousands = Convert.ToString(Number).Length / 3;
             for (int i = NumberOfThousands; i >= 0; i--)
             {
-
-                int daliklis = Convert.ToInt32(Math.Pow(1000, i));
-                int sveikaDalis = Number / daliklis;
-                if (sveikaDalis == 0)
+                int divisor = Convert.ToInt32(Math.Pow(1000, i));
+                int integer = Number / divisor;
+                if (integer == 0 && Number != 0)
                 {
                     continue;
                 }
-                ConvertNumberToText(sveikaDalis, i);
-                Number -= sveikaDalis * daliklis;
+                ConvertNumberToText(integer, i);
+                Number -= integer * divisor;
             }
             Console.WriteLine();
         }
 
 
-        static void ConvertNumberToText(int number, int i)
+        static void ConvertNumberToText(int number, int thousandIndex)
         {
             bool NumberFrom10to19 = false;
             bool NumberFrom20to99 = false;
             if (LengthOfNumber(number) == 3)
             {
-                Console.Write(GetTheRoot(number / 100, NumberFrom10to19, NumberFrom20to99) + (number / 100 > 1 ? " simtai" : " simtas"));
+                Console.Write(GetTheRoot(number / 100, NumberFrom10to19, NumberFrom20to99) + (number / 100 > 1 ? " simtai " : " simtas "));
             }
             int tempNR = number % 100;
 
             if (tempNR >= 0 && tempNR <= 9)
             {
-                Console.Write(" " + GetTheRoot(tempNR, NumberFrom10to19, NumberFrom20to99));
+                Console.Write(GetTheRoot(tempNR, NumberFrom10to19, NumberFrom20to99)+ " ");
             }
             else if (tempNR > 9 && tempNR <= 19)
             {
                 NumberFrom10to19 = true;
-                Console.Write(" " + GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99));
+                Console.Write(GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99) + " ");
             }
             else
             {
                 NumberFrom20to99 = true;
-                Console.Write(" " + GetTheRoot(tempNR / 10, NumberFrom10to19, NumberFrom20to99));
+                Console.Write(GetTheRoot(tempNR / 10, NumberFrom10to19, NumberFrom20to99) + " ");
                 NumberFrom20to99 = false;
                 if (tempNR % 10 != 0)
                 {
-                    Console.Write(" " + GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99));
+                    Console.Write(GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99) + " ");
                 }
             }
-
-            Console.Write(" " + thousands(i));
+            Console.Write(thousands(thousandIndex, tempNR) + " ");
+        }
+        static string extractThousandEnding(int number)
+        {
+            string ending;
+            if (number == 1)
+            {
+                ending = "tis";
+            }
+            else if (number > 1 && number <= 9)
+            {
+                ending = "ciai";
+            }
+            else if (number > 9 && number <= 20 || number % 10 == 0)
+            {
+                ending = "ciu";
+            }
+            else
+            {
+                ending = extractThousandEnding(number % 10);
+            }
+            return ending;
         }
 
-        static string thousands(int thousands)
+        static string thousands(int thousands, int tempNR)
         {
             switch (thousands)
             {
                 case 0:
                     return "";
                 case 1:
-                    return " tukstantis ";
+                    return "tukstan" + extractThousandEnding(tempNR);
                 case 2:
-                    return " milijonas ";
+                    return "milijonas ";
                 default:
-                    return " Not valid ";
+                    return "Not valid ";
             }
 
         }
         static string GetTheRoot(int number, bool NumberFrom10to19 = false, bool NumberFrom20to99 = false)
         {
-            string result;
             switch (number)
             {
                 case 0:
-                    result = (NumberFrom10to19 ? "desimt" : "Nulis");
-                    return result;
+                    return (NumberFrom10to19 ? "desimt" : "Nulis");
+
                 case 1:
-                    result = "vien" + (NumberFrom10to19 ? "uolika" : "as");
-                    return result;
+                    return "vien" + (NumberFrom10to19 ? "uolika" : "as");
+
                 case 2:
-                    result = "d" + (NumberFrom10to19 ? "vylika" : (NumberFrom20to99 ? "videsimt" : "u"));
-                    return result;
+                    return "d" + (NumberFrom10to19 ? "vylika" : (NumberFrom20to99 ? "videsimt" : "u"));
+
                 case 3:
-                    result = "tr" + (NumberFrom10to19 ? "ylika" : (NumberFrom20to99 ? "isdesimt" : "ys"));
-                    return result;
+                    return "tr" + (NumberFrom10to19 ? "ylika" : (NumberFrom20to99 ? "isdesimt" : "ys"));
 
                 case 4:
-                    result = "keturi" + (NumberFrom10to19 ? "olika" : (NumberFrom20to99 ? "asdesimt" : ""));
-                    return result;
+                    return "keturi" + (NumberFrom10to19 ? "olika" : (NumberFrom20to99 ? "asdesimt" : ""));
 
                 case 5:
-                    result = "penki" + (NumberFrom10to19 ? "olika" : (NumberFrom20to99 ? "asdesimt" : ""));
-                    return result;
+                    return "penki" + (NumberFrom10to19 ? "olika" : (NumberFrom20to99 ? "asdesimt" : ""));
 
                 case 6:
-                    result = "sesi" + (NumberFrom10to19 ? "olika" : (NumberFrom20to99 ? "sesiasdesimt" : ""));
-                    return result;
+                    return "sesi" + (NumberFrom10to19 ? "olika" : (NumberFrom20to99 ? "sesiasdesimt" : ""));
 
                 case 7:
-                    result = "sept" + (NumberFrom10to19 ? "iniolika" : (NumberFrom20to99 ? "yniasdesimt" : "yni"));
-                    return result;
+                    return "sept" + (NumberFrom10to19 ? "iniolika" : (NumberFrom20to99 ? "yniasdesimt" : "yni"));
+
                 case 8:
-                    result = "astuoni" + (NumberFrom10to19 ? "olika" : (NumberFrom20to99 ? "asdiasimt" : ""));
-                    return result;
+                    return "astuoni" + (NumberFrom10to19 ? "olika" : (NumberFrom20to99 ? "asdiasimt" : ""));
+
                 case 9:
-                    result = "devyni" + (NumberFrom10to19 ? "olika" : (NumberFrom20to99 ? "asdesimt" : ""));
-                    return result;
+                    return "devyni" + (NumberFrom10to19 ? "olika" : (NumberFrom20to99 ? "asdesimt" : ""));
+
                 default:
                     return "Nothing";
 
