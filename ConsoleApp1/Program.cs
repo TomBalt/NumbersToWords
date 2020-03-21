@@ -12,7 +12,7 @@ namespace ConsoleApp1
             string Input = Console.ReadLine();
             Console.WriteLine("Task: Is it a number?");
             Console.WriteLine($"Input {Input} {(IsItANumber(Input) ? "is" : "is not")} a number.");
-            Console.ReadKey();
+            Console.WriteLine("====================================================================");
             //*/ 
             //string Input; //delete
             int RangeMin = -9;
@@ -26,13 +26,13 @@ namespace ConsoleApp1
             {
                 IsItAValidNumber = IsANumberInArange(Input, RangeMin, RangeMax);
             }
-            Console.ReadKey();
+            Console.WriteLine("====================================================================");
             ////
             Console.WriteLine("Task: Change number in to the text.");
             Console.Write("Please enter a number to be converted to sentence: ");
             Input = Console.ReadLine();
             ChangeNumberToText(Convert.ToInt32(Input));
-            Console.ReadKey();
+            Console.WriteLine("====================================================================");
             //*/
 
             /*
@@ -146,6 +146,10 @@ namespace ConsoleApp1
                 }
                 ConvertNumberToText(integer, i);
                 Number -= integer * divisor;
+                if (Number == 0)
+                {
+                    break;
+                }
             }
             Console.WriteLine();
         }
