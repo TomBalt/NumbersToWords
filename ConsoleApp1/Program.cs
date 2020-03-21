@@ -14,7 +14,6 @@ namespace ConsoleApp1
             Console.WriteLine("Task: Is it a number?");
             Console.WriteLine($"Input {Input} {(IsItANumber(Input) ? "is" : "is not")} a number.");
             Console.WriteLine("====================================================================");
-            //*/
             int RangeMin = -9;
             int RangeMax = 9;
             bool IsItAValidNumber;
@@ -148,7 +147,8 @@ namespace ConsoleApp1
                 if (Number == 0)
                 {
                     break;
-                };
+
+                }
             }
 
             for (int i = 0; i < words.Count; i++)
@@ -162,7 +162,6 @@ namespace ConsoleApp1
                     Console.Write(words[i]);
                 }
                 Console.Write(" ");
-
             }
 
             Console.WriteLine();
