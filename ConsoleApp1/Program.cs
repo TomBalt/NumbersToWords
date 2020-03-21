@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp1
 {
@@ -7,14 +8,12 @@ namespace ConsoleApp1
         static void Main()
         {
 
-            //* 
+            
             Console.Write("Please enter a number: ");
             string Input = Console.ReadLine();
             Console.WriteLine("Task: Is it a number?");
             Console.WriteLine($"Input {Input} {(IsItANumber(Input) ? "is" : "is not")} a number.");
             Console.WriteLine("====================================================================");
-            //*/ 
-            //string Input; //delete
             int RangeMin = -9;
             int RangeMax = 9;
             bool IsItAValidNumber;
@@ -37,18 +36,16 @@ namespace ConsoleApp1
 
             /*
             //Testing part
-            //int[] nr = { 411, 14, 432, 1034, 23440, 423914, 330000, -1, 0, -321 };
-            //int[] nr = { 0 };
-
+            //int[] nr = { -991919191, 411, 14, 432, 1034, 23440, 423914, 330000, -1, 0, -321 };
+            //int[] nr = { 330000 };
             for (int i = 0; i < nr.Length; i++)
             {
                 Console.Write(nr[i] + ": ");
-                Console.WriteLine();
+                //  Console.WriteLine();
                 ChangeNumberToText(Convert.ToInt32(nr[i]));
             }
             */
             //*
-
             Console.WriteLine("Task: Number between -19 and 19 to text?");
             RangeMin = -19;
             RangeMax = 19;
@@ -65,7 +62,7 @@ namespace ConsoleApp1
                 Console.WriteLine("ERROR! Exit 1");
             }
             //*/
-            Console.ReadKey();
+            Console.WriteLine("====================================================================");
 
         }
 
@@ -130,9 +127,10 @@ namespace ConsoleApp1
 
         static void ChangeNumberToText(int Number)
         {
+            List<string> words = new List<string>();
             if (Number < 0)
             {
-                Console.Write("Minus ");
+                words.Add("minus");
                 Number *= -1;
             }
             int NumberOfThousands = Convert.ToString(Number).Length / 3;
@@ -144,66 +142,80 @@ namespace ConsoleApp1
                 {
                     continue;
                 }
-                ConvertNumberToText(integer, i);
+                ConvertNumberToText(integer, i, words);
                 Number -= integer * divisor;
                 if (Number == 0)
                 {
                     break;
+
                 }
             }
+
+            for (int i = 0; i < words.Count; i++)
+            {
+                if (i == 0)
+                {
+                    Console.Write(FirstLetterUppercase(words[i]));
+                }
+                else
+                {
+                    Console.Write(words[i]);
+                }
+                Console.Write(" ");
+            }
+
             Console.WriteLine();
         }
 
-
-        static void ConvertNumberToText(int number, int thousandIndex)
+        static void ConvertNumberToText(int number, int thousandIndex, List<string> words)
         {
             bool NumberFrom10to19 = false;
             bool NumberFrom20to99 = false;
             if (LengthOfNumber(number) == 3)
             {
-                Console.Write(GetTheRoot(number / 100, NumberFrom10to19, NumberFrom20to99) + (number / 100 > 1 ? " simtai " : " simtas "));
+                words.Add(GetTheRoot(number / 100, NumberFrom10to19, NumberFrom20to99) + (number / 100 > 1 ? " simtai" : " simtas"));
             }
             int tempNR = number % 100;
 
             if (tempNR >= 0 && tempNR <= 9)
             {
-                Console.Write(GetTheRoot(tempNR, NumberFrom10to19, NumberFrom20to99)+ " ");
+                words.Add(GetTheRoot(tempNR, NumberFrom10to19, NumberFrom20to99));
             }
             else if (tempNR > 9 && tempNR <= 19)
             {
                 NumberFrom10to19 = true;
-                Console.Write(GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99) + " ");
+                words.Add(GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99));
             }
             else
             {
                 NumberFrom20to99 = true;
-                Console.Write(GetTheRoot(tempNR / 10, NumberFrom10to19, NumberFrom20to99) + " ");
+                words.Add(GetTheRoot(tempNR / 10, NumberFrom10to19, NumberFrom20to99));
                 NumberFrom20to99 = false;
                 if (tempNR % 10 != 0)
                 {
-                    Console.Write(GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99) + " ");
+                    words.Add(GetTheRoot(tempNR % 10, NumberFrom10to19, NumberFrom20to99));
                 }
             }
-            Console.Write(thousands(thousandIndex, tempNR) + " ");
+            words.Add(thousands(thousandIndex, tempNR));
         }
-        static string extractThousandEnding(int number)
+        static string ExtractThousandsEnding(int number, int thousandsIndex)
         {
             string ending;
             if (number == 1)
             {
-                ending = "tis";
+                ending = thousandsIndex == 1 ? "tis" : "as";
             }
             else if (number > 1 && number <= 9)
             {
-                ending = "ciai";
+                ending = thousandsIndex == 1 ? "ciai" : "ai";
             }
             else if (number > 9 && number <= 20 || number % 10 == 0)
             {
-                ending = "ciu";
+                ending = thousandsIndex == 1 ? "ciu" : "u";
             }
             else
             {
-                ending = extractThousandEnding(number % 10);
+                ending = ExtractThousandsEnding(number % 10, thousandsIndex);
             }
             return ending;
         }
@@ -215,11 +227,11 @@ namespace ConsoleApp1
                 case 0:
                     return "";
                 case 1:
-                    return "tukstan" + extractThousandEnding(tempNR);
+                    return "tukstan" + ExtractThousandsEnding(tempNR, thousands);
                 case 2:
-                    return "milijonas ";
+                    return "milijon" + ExtractThousandsEnding(tempNR,thousands);
                 default:
-                    return "Not valid ";
+                    return "Over the limit!";
             }
 
         }
@@ -266,6 +278,17 @@ namespace ConsoleApp1
         static int LengthOfNumber(int number)
         {
             return Convert.ToString(number).Length;
+        }
+
+        static string FirstLetterUppercase(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
+            char[] a = s.ToCharArray();
+            a[0] = char.ToUpper(a[0]);
+            return new string(a);
         }
     }
 }
